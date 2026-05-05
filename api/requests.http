@@ -1,0 +1,54 @@
+@host = http://localhost:3333
+
+########## Games Entity ##########
+GET {{host}}/games
+###
+GET {{host}}/games/2
+###
+POST {{host}}/games
+Content-Type: application/json
+
+{
+    "name":"Days Gone"
+}
+###
+DELETE {{host}}/games/1
+
+
+
+########## Reviews Entity ##########
+GET {{host}}/reviews
+###
+GET {{host}}/reviews/1
+###
+POST {{host}}/reviews
+Content-Type: application/json
+
+{
+    "title":"Muito top!",
+    "description":"Muitos Zumbis",
+    "gameName":"Days Gone"
+}
+###
+PUT {{host}}/reviews/10
+Content-Type: application/json
+
+{
+    "gameName":"Days Gone"
+}
+###
+DELETE {{host}}/reviews/1
+
+
+
+########## Game Like And Game Dislike  ##########
+POST {{host}}/like/3
+###
+POST {{host}}/dislike/2
+
+
+
+########## Review Like And Review Dislike  ##########
+POST {{host}}/like-review/10
+###
+POST {{host}}/dislike-review/10
