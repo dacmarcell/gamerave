@@ -1,46 +1,110 @@
-import BackButton from "@/components/BackButton";
 import ReviewCard from "@/components/ReviewCard";
 import { BASE_URL } from "@/constants";
 import { Game as GameType } from "@/types";
+import Link from "next/link";
+
 export const dynamic = "force-dynamic";
 
-function validateGameID(id: string) {
-  const validID = parseInt(id);
+async function getGameByIDAction(id: string) {
+  try {
+    const validID = parseInt(id);
+    if (isNaN(validID)) return { error: "Invalid Game ID" };
 
-  if (isNaN(validID)) {
-    throw new Error("ID de Jogo deve ser um número...");
-  } else if (validID < 1) {
-    throw new Error("ID de Jogo não pode ser menor que 1...");
+    const res = await fetch(`${BASE_URL}/games/${validID}`, { cache: 'no-store' });
+    
+    if (res.status === 404) return { error: "Game not found" };
+    if (!res.ok) return { error: "Failed to fetch game details" };
+
+    const game: GameType = await res.json();
+    
+    // TypeORM might return "unregistered game" string instead of object if not found
+    if (typeof game === 'string') return { error: "Game not found in database" };
+
+    return { game };
+  } catch {
+    return { error: "API connection error" };
+  }
+}
+
+export default async function GameDetailPage({ params }: { params: Promise<{ gameID: string }> }) {
+  const gameID = (await params).gameID;
+  const { game, error } = await getGameByIDAction(gameID);
+
+  if (error || !game) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 gap-6">
+        <div className="text-6xl">😕</div>
+        <h1 className="text-3xl font-bold text-white">{error || "Something went wrong"}</h1>
+        <p className="text-slate-400">We couldn&apos;t find the game you&apos;re looking for.</p>
+        <Link href="/" className="text-primary hover:underline font-bold">
+          ← Back to Games
+        </Link>
+      </div>
+    );
   }
 
-  return validID;
-}
-
-async function getGameByIDAction(id: string) {
-  const validID = validateGameID(id);
-
-  const res = await fetch(`${BASE_URL}/games/${validID}`);
-  const game: GameType = await res.json();
-
-  return { game };
-}
-
-async function Game({ params }: { params: Promise<{ gameID: string }> }) {
-  const gameID = (await params).gameID;
-  const { game } = await getGameByIDAction(gameID);
-
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full">
-      <h1>{game.name}</h1>
-      <BackButton href="/games" />
+    <div className="flex flex-col gap-10 pb-20">
+      <div className="flex items-center gap-4">
+        <Link href="/" className="text-slate-500 hover:text-white transition-colors">
+          Games
+        </Link>
+        <span className="text-slate-700">/</span>
+        <span className="text-slate-300">{game.name}</span>
+      </div>
 
-      {game.reviews
-        ? game.reviews.map((review) => (
-            <ReviewCard key={review.id} review={review} />
-          ))
-        : null}
+      <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-white/5 pb-10">
+        <div className="flex flex-col gap-2">
+          <span className="text-primary font-bold text-sm tracking-widest uppercase">Game Details</span>
+          <h1 className="text-5xl font-black text-white">{game.name}</h1>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="flex flex-col items-end">
+            <span className="text-xs text-slate-500 font-bold uppercase">Popularity</span>
+            <span className="text-2xl font-bold text-amber-500">★ {game.likes}</span>
+          </div>
+          <button className="bg-white/5 hover:bg-white/10 p-4 rounded-2xl border border-white/10 transition-all">
+            Share
+          </button>
+        </div>
+      </header>
+
+      <section className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="lg:col-span-2 flex flex-col gap-8">
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-bold text-white">Player Reviews</h2>
+            <button className="bg-primary text-white text-sm font-bold px-4 py-2 rounded-lg">
+              Write a Review
+            </button>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            {game.reviews && game.reviews.length > 0 ? (
+              game.reviews.map((review) => (
+                <ReviewCard key={review.id} review={review} />
+              ))
+            ) : (
+              <div className="glass-morphism p-12 rounded-2xl text-center border-dashed border-white/10">
+                <p className="text-slate-500 italic">No reviews yet. Be the first to review {game.name}!</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <aside className="flex flex-col gap-6">
+          <div className="glass-morphism p-6 rounded-2xl flex flex-col gap-4">
+            <h3 className="font-bold text-white">Quick Stats</h3>
+            <div className="flex justify-between py-2 border-b border-white/5">
+              <span className="text-slate-400">Total Reviews</span>
+              <span className="text-white font-medium">{game.reviews?.length || 0}</span>
+            </div>
+            <div className="flex justify-between py-2 border-b border-white/5">
+              <span className="text-slate-400">Rank</span>
+              <span className="text-white font-medium">#1 Trending</span>
+            </div>
+          </div>
+        </aside>
+      </section>
     </div>
   );
 }
-
-export default Game;

@@ -10,22 +10,25 @@ async function ReviewCard(props: ReviewCardProps) {
   const { review } = props;
 
   return (
-    <div className="flex w-full p-4 max-w-lg flex-col rounded-lg bg-white shadow-sm border border-slate-200 my-6">
-      <div className="flex items-center gap-4 text-slate-800">
-        <div className="flex w-full flex-col">
-          <div className="flex items-center justify-between">
-            <h5 className="text-xl font-semibold text-slate-800">
-              {review.title}
-            </h5>
-          </div>
-          <p className="text-xs uppercase font-bold text-slate-500 mt-0.5">
-            {review.likes} likes
-          </p>
+    <div className="flex w-full p-6 max-w-2xl flex-col rounded-2xl glass-morphism border border-white/5 my-4 transition-all hover:border-primary/20">
+      <div className="flex justify-between items-start mb-4">
+        <div className="flex flex-col">
+          <h5 className="text-lg font-bold text-white">
+            {review.title}
+          </h5>
+          <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">
+            {review.likes} Helpful Reactions
+          </span>
+        </div>
+        <div className="flex text-amber-500 text-xs">
+          ★★★★★
         </div>
       </div>
-      <div className="mt-6">
-        <p className="text-base text-slate-600 font-light leading-normal">
-          &quot;{review.description}&quot;
+      
+      <div className="relative">
+        <span className="absolute -left-2 -top-2 text-4xl text-primary/20 font-serif">&quot;</span>
+        <p className="text-slate-300 italic leading-relaxed pl-4">
+          {review.description}
         </p>
       </div>
     </div>

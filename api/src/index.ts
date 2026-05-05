@@ -23,8 +23,8 @@ AppDataSource.initialize()
             next
           );
           if (result instanceof Promise)
-            result.then(result => (result ? res.send(result) : undefined));
-          else if (result) res.json(result);
+            result.then(result => (result !== undefined ? res.send(result) : undefined));
+          else if (result !== undefined) res.json(result);
         }
       );
     });

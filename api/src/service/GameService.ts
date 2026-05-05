@@ -14,25 +14,28 @@ export class GameService {
     return this.gameRepository.find({
       relations: {
         reviews: true
+      },
+      order: {
+        likes: 'DESC'
       }
     });
   }
 
   async one(id: number) {
-    const game = await this.gameRepository.findOne({
+    return await this.gameRepository.findOne({
       where: { id },
       relations: {
         reviews: true
       }
     });
-    return game ?? 'unregistered game';
   }
 
   async save(createGameDto: CreateGameDto) {
     const { name } = createGameDto;
-    const game = await this.gameRepository.findOneBy({ name });
-    if (game) return 'game already exists';
-    const newGame = Object.assign(new Game(), {
+    const existingGame = await this.gameRepository.findOneBy({ name });
+    if (existingGame) throw new Error('Game already exists');
+
+    const newGame = this.gameRepository.create({
       name,
       likes: 0
     });
@@ -41,41 +44,25 @@ export class GameService {
 
   async remove(id: number) {
     const gameToRemove = await this.gameRepository.findOneBy({ id });
-    if (!gameToRemove) return 'this game not exist';
-    const reviewsToRemove = await this.reviewsRepository.find({
-      where: { game: gameToRemove.id }
-    });
-    if (reviewsToRemove) {
-      for (const review of reviewsToRemove)
-        await this.reviewsRepository.remove(review);
-      await this.gameRepository.remove(gameToRemove);
-      return 'game and your reviews has been removed';
-    }
+    if (!gameToRemove) return null;
+
+    // TypeORM with CASCADE on the entity level would be better, but doing it manually here
+    await this.reviewsRepository.delete({ game: id as any });
     await this.gameRepository.remove(gameToRemove);
-    return 'game has been removed';
+    return true;
   }
 
   async like(id: number) {
-    let game = await this.gameRepository.findOneBy({ id });
-    if (!game) return 'game not found';
+    const game = await this.gameRepository.findOneBy({ id });
+    if (!game) return null;
     game.likes++;
-    await this.gameRepository.save(game);
-    return {
-      name: game.name,
-      total_likes: game.likes,
-      message: `${game.name} liked.`
-    };
+    return await this.gameRepository.save(game);
   }
 
   async dislike(id: number) {
-    let game = await this.gameRepository.findOneBy({ id });
-    if (!game) return 'game not found';
+    const game = await this.gameRepository.findOneBy({ id });
+    if (!game) return null;
     game.likes--;
-    await this.gameRepository.save(game);
-    return {
-      name: game.name,
-      total_likes: game.likes,
-      message: `${game.name} disliked.`
-    };
+    return await this.gameRepository.save(game);
   }
 }

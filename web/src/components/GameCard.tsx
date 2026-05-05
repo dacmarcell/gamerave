@@ -1,13 +1,14 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface GameCardProps {
   game: {
     id: number;
     likes: number;
     name: string;
-    reviews: {
+    reviews?: {
+      id: number;
       title: string;
       description: string;
       likes: number;
@@ -17,28 +18,38 @@ interface GameCardProps {
 
 function GameCard(props: GameCardProps) {
   const { game } = props;
-
   const router = useRouter();
-  const pathname = usePathname();
 
   return (
     <div
-      className={`relative flex flex-col my-6 bg-white shadow-sm border border-slate-200 rounded-lg w-96 ${
-        game.id ? "hover:cursor-pointer" : ""
-      }`}
-      {...(game.id
-        ? { onClick: () => router.push(`${pathname}/${game.id}`) }
-        : {})}
+      onClick={() => router.push(`/games/${game.id}`)}
+      className="group relative glass-morphism rounded-2xl overflow-hidden card-hover cursor-pointer p-6 flex flex-col gap-4 border border-white/5"
     >
-      <span className="mx-3 mb-0 border-b border-slate-200 pt-3 pb-2 px-1">
-        <span className="text-sm font-medium text-slate-600">Game</span>
-      </span>
+      <div className="absolute top-0 right-0 p-4">
+        <div className="bg-amber-500/10 text-amber-500 text-xs font-bold px-2 py-1 rounded-md border border-amber-500/20">
+          ★ {game.likes}
+        </div>
+      </div>
 
-      <span className="p-4">
-        <h5 className="mb-2 text-slate-800 text-xl font-semibold">
+      <div className="flex flex-col gap-1">
+        <span className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">New Entry</span>
+        <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors">
           {game.name}
-        </h5>
-      </span>
+        </h3>
+      </div>
+
+      <div className="mt-auto flex justify-between items-center text-sm">
+        <span className="text-slate-400">
+          {game.reviews?.length || 0} Reviews
+        </span>
+        <button className="text-primary font-bold flex items-center gap-1 group/btn">
+          View Details
+          <span className="group-hover/btn:translate-x-1 transition-transform">→</span>
+        </button>
+      </div>
+      
+      {/* Decorative gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
     </div>
   );
 }
