@@ -25,6 +25,9 @@ export default function Navbar() {
         <div className="flex gap-4 md:gap-8 items-center text-sm font-medium text-slate-300">
           {user ? (
             <>
+              <Link href="/profile/reviews" className="hover:text-primary transition-colors">
+                My Reviews
+              </Link>
               <span className="hidden md:inline-block text-slate-400">
                 {user.email}
               </span>

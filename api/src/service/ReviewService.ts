@@ -44,10 +44,14 @@ export class ReviewService {
     return await this.reviewRepository.save(newReview);
   }
 
-  async update(id: number, updateReviewDto: UpdateReviewDto) {
+  async update(id: number, updateReviewDto: UpdateReviewDto, userId: number) {
     const { title, description, gameName } = updateReviewDto;
     const review = await this.reviewRepository.findOneBy({ id });
     if (!review) return null;
+
+    if (review.user.id !== userId) {
+      throw new Error('Unauthorized');
+    }
 
     if (gameName) {
       const game = await this.gameRepository.findOneBy({ name: gameName });
@@ -61,12 +65,24 @@ export class ReviewService {
     return await this.reviewRepository.save(review);
   }
 
-  async remove(id: number) {
+  async remove(id: number, userId: number) {
     const reviewToRemove = await this.reviewRepository.findOneBy({ id });
     if (!reviewToRemove) return null;
+
+    if (reviewToRemove.user.id !== userId) {
+      throw new Error('Unauthorized');
+    }
+
     await this.reviewLikeRepository.delete({ review: id as any });
     await this.reviewRepository.remove(reviewToRemove);
     return true;
+  }
+
+  async getByUser(userId: number) {
+    return await this.reviewRepository.find({
+      where: { user: { id: userId } },
+      relations: ['game', 'user']
+    });
   }
 
   async likeReview(id: number, userId: number) {

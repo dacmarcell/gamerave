@@ -81,6 +81,12 @@ export const Routes = [
     action: 'getUserLikes'
   },
   {
+    method: 'get',
+    route: '/users/:id/reviews',
+    controller: ReviewController,
+    action: 'getByUser'
+  },
+  {
     method: 'post',
     route: '/auth/register',
     controller: AuthController,
