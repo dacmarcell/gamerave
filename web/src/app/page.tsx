@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 async function getGamesAction() {
   try {
-    const res = await fetch(`${BASE_URL}/games`, { cache: 'no-store' });
+    const res = await fetch(`${BASE_URL}/games`, { cache: "no-store" });
     if (!res.ok) return { games: [], error: "Failed to fetch games" };
     const games: Game[] = await res.json();
     return { games };
@@ -30,8 +30,9 @@ export default async function GamesPage() {
           <span className="gradient-text">Gaming Adventure</span>
         </h1>
         <p className="text-slate-400 max-w-2xl text-lg">
-          Explore curated reviews and real-time ratings from a community of hardcore gamers. 
-          Find what&apos;s hot and what&apos;s not in the world of gaming.
+          Explore curated reviews and real-time ratings from a community of
+          hardcore gamers. Find what&apos;s hot and what&apos;s not in the world
+          of gaming.
         </p>
       </section>
 
@@ -40,17 +41,20 @@ export default async function GamesPage() {
         <div className="flex justify-between items-end">
           <div>
             <h2 className="text-2xl font-bold text-white">Trending Games</h2>
-            <p className="text-slate-500 text-sm">Most liked and reviewed this week</p>
-          </div>
-          <div className="text-primary text-sm font-bold cursor-pointer hover:underline">
-            View all
+            <p className="text-slate-500 text-sm">
+              Most liked and reviewed this week
+            </p>
           </div>
         </div>
 
         {error ? (
           <div className="glass-morphism p-12 rounded-2xl text-center border-red-500/20 bg-red-500/5">
-            <span className="text-red-400 font-bold mb-2 block">System Error</span>
-            <p className="text-slate-400">{error}. Please check if the API is running.</p>
+            <span className="text-red-400 font-bold mb-2 block">
+              System Error
+            </span>
+            <p className="text-slate-400">
+              {error}. Please check if the API is running.
+            </p>
           </div>
         ) : games.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -60,7 +64,9 @@ export default async function GamesPage() {
           </div>
         ) : (
           <div className="glass-morphism p-12 rounded-2xl text-center">
-            <p className="text-slate-400">No games found in the database. Run the seed script!</p>
+            <p className="text-slate-400">
+              No games found in the database. Run the seed script!
+            </p>
           </div>
         )}
       </div>
