@@ -2,6 +2,7 @@ import BackButton from "@/components/BackButton";
 import ReviewCard from "@/components/ReviewCard";
 import { BASE_URL } from "@/constants";
 import { Game as GameType } from "@/types";
+export const dynamic = "force-dynamic";
 
 function validateGameID(id: string) {
   const validID = parseInt(id);
@@ -15,7 +16,7 @@ function validateGameID(id: string) {
   return validID;
 }
 
-export async function getGameByIDAction(id: string) {
+async function getGameByIDAction(id: string) {
   const validID = validateGameID(id);
 
   const res = await fetch(`${BASE_URL}/games/${validID}`);

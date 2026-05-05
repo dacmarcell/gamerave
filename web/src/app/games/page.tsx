@@ -1,8 +1,9 @@
 import GameCard from "@/components/GameCard";
 import { BASE_URL } from "@/constants";
 import { Game } from "@/types";
+export const dynamic = "force-dynamic";
 
-export async function getGamesAction() {
+async function getGamesAction() {
   const res = await fetch(`${BASE_URL}/games`);
   const games: Game[] = await res.json();
 
