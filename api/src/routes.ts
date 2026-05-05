@@ -1,5 +1,6 @@
 import { GameController } from './controller/GameController';
 import { ReviewController } from './controller/ReviewController';
+import { AuthController } from './controller/AuthController';
 
 export const Routes = [
   //Games
@@ -83,5 +84,18 @@ export const Routes = [
     route: '/dislike-review/:id',
     controller: ReviewController,
     action: 'dislikeReview'
+  },
+  // Auth
+  {
+    method: 'post',
+    route: '/auth/register',
+    controller: AuthController,
+    action: 'register'
+  },
+  {
+    method: 'post',
+    route: '/auth/login',
+    controller: AuthController,
+    action: 'login'
   }
 ];

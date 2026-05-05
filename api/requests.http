@@ -52,3 +52,21 @@ POST {{host}}/dislike/2
 POST {{host}}/like-review/10
 ###
 POST {{host}}/dislike-review/10
+
+
+########## Auth ##########
+POST {{host}}/auth/register
+Content-Type: application/json
+
+{
+    "email": "marcell@gmail.com",
+    "password": "123456"
+}
+###
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "marcell@gmail.com",
+    "password": "123456"
+}

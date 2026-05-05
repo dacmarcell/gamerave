@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { Game } from './entity/Game';
 import { Review } from './entity/Review';
+import { User } from './entity/User';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -12,7 +13,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME || 'gamerave',
   synchronize: true,
   logging: true,
-  entities: [Game, Review],
+  entities: [Game, Review, User],
   migrations: ['./src/migration/**.ts'],
   subscribers: []
 });

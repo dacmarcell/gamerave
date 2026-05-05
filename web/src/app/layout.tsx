@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata: Metadata = {
   title: "GameRave | Discover the Best Games",
@@ -15,10 +16,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        <Navbar />
-        <main className="pt-24 min-h-screen px-6 md:px-12 max-w-7xl mx-auto">
-          {children}
-        </main>
+        <AuthProvider>
+          <Navbar />
+          <main className="pt-24 min-h-screen px-6 md:px-12 max-w-7xl mx-auto">
+            {children}
+          </main>
+        </AuthProvider>
       </body>
     </html>
   );
