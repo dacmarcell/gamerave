@@ -31,6 +31,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node build/index.js",
+    "seed": "ts-node src/seed/seed.ts",
     "dev": "ts-node-dev --respawn --transpile-only --inspect -- ./src/index.ts --ignore-watch node_modules",
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:run": "npx typeorm-ts-node-commonjs migration:run -d ./src/data-source.ts",
