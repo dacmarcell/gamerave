@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { BASE_URL } from "@/constants";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface ReviewLikeButtonProps {
   reviewId: number;
@@ -47,7 +48,7 @@ export default function ReviewLikeButton({
       toggleReviewLikeLocally(reviewId);
     } catch (err) {
       console.error(err);
-      alert("Error toggling like.");
+      toast.error("Error toggling like.");
     } finally {
       setLoading(false);
     }
