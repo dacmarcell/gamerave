@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import * as cors from 'cors';
 import { Request, Response } from 'express';
 import { AppDataSource } from './data-source';
 import { Routes } from './routes';
@@ -10,6 +11,7 @@ const HOST = process.env.HOST || 'localhost';
 AppDataSource.initialize()
   .then(async () => {
     const app = express();
+    app.use(cors());
     app.use(bodyParser.json());
     Routes.forEach(route => {
       (app as any)[route.method](
@@ -26,9 +28,10 @@ AppDataSource.initialize()
         }
       );
     });
-    app.listen(PORT);
-    console.log(
-      `Express server has started on port 3000. Open http://${HOST}:${PORT}/games to see results`
-    );
+    app.listen(PORT, () => {
+      console.log(
+        `Express server has started on port ${PORT}. Open http://${HOST}:${PORT}/games to see results`
+      );
+    });
   })
   .catch(error => console.log(error));
