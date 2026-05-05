@@ -47,6 +47,10 @@ POST {{host}}/like/3
 POST {{host}}/dislike/2
 
 
+########## View user likes  ##########
+
+GET http://localhost:3333/users/1/likes
+
 
 ########## Review Like And Review Dislike  ##########
 POST {{host}}/like-review/10
