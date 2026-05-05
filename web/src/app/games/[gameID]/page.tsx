@@ -1,3 +1,4 @@
+import ReviewHeaderActions from "@/components/ReviewHeaderActions";
 import ShareButton from "@/components/ShareButton";
 import ReviewCard from "@/components/ReviewCard";
 import { BASE_URL } from "@/constants";
@@ -18,7 +19,6 @@ async function getGameByIDAction(id: string) {
 
     const game: GameType = await res.json();
     
-    // TypeORM might return "unregistered game" string instead of object if not found
     if (typeof game === 'string') return { error: "Game not found in database" };
 
     return { game };
@@ -70,12 +70,7 @@ export default async function GameDetailPage({ params }: { params: Promise<{ gam
 
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         <div className="lg:col-span-2 flex flex-col gap-8">
-          <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold text-white">Player Reviews</h2>
-            <button className="bg-primary text-white text-sm font-bold px-4 py-2 rounded-lg">
-              Write a Review
-            </button>
-          </div>
+          <ReviewHeaderActions gameId={game.id} />
 
           <div className="flex flex-col gap-4">
             {game.reviews && game.reviews.length > 0 ? (
