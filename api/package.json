@@ -4,11 +4,11 @@
   "description": "Awesome project developed with TypeORM.",
   "type": "commonjs",
   "repository": {
-    "url": "https://github.com/marcelldac/GameRave",
+    "url": "https://github.com/marcelldac/gameRave",
     "type": "git"
   },
   "bugs": {
-    "url": "https://github.com/marcelldac/GameRave/issues",
+    "url": "https://github.com/marcelldac/gameRave/issues",
     "email": "devmarcell@protonmail.com"
   },
   "devDependencies": {
