@@ -10,6 +10,11 @@ export default function Navbar() {
         >
           GameRave
         </Link>
+        <div className="flex gap-8 items-center text-sm font-medium text-slate-300">
+          <button className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-full transition-all active:scale-95 shadow-lg shadow-primary/20">
+            Join the Rave
+          </button>
+        </div>
       </div>
     </nav>
   );
