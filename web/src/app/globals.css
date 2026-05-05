@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -25,7 +25,7 @@
 body {
   color: var(--foreground);
   background: radial-gradient(circle at top center, #1e1b4b 0%, #050505 100%);
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
@@ -71,4 +71,3 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary);
 }
-
