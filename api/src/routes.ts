@@ -75,6 +75,12 @@ export const Routes = [
   },
   // Auth
   {
+    method: 'get',
+    route: '/users/:id/likes',
+    controller: AuthController,
+    action: 'getUserLikes'
+  },
+  {
     method: 'post',
     route: '/auth/register',
     controller: AuthController,
