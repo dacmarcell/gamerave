@@ -3,6 +3,8 @@ import { DataSource } from 'typeorm';
 import { Game } from './entity/Game';
 import { Review } from './entity/Review';
 import { User } from './entity/User';
+import { GameLike } from './entity/GameLike';
+import { ReviewLike } from './entity/ReviewLike';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -13,7 +15,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME || 'gamerave',
   synchronize: true,
   logging: true,
-  entities: [Game, Review, User],
+  entities: [Game, Review, User, GameLike, ReviewLike],
   migrations: ['./src/migration/**.ts'],
   subscribers: []
 });

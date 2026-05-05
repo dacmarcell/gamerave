@@ -60,21 +60,19 @@ export class ReviewController {
 
   async likeReview(request: Request, response: Response) {
     const id = parseInt(request.params.id);
-    const review = await this.reviewService.likeReview(id);
-    if (!review) {
-      response.status(404);
-      return { message: 'Review not found' };
-    }
-    return review;
-  }
+    const { userId } = request.body;
 
-  async dislikeReview(request: Request, response: Response) {
-    const id = parseInt(request.params.id);
-    const review = await this.reviewService.dislikeReview(id);
-    if (!review) {
-      response.status(404);
-      return { message: 'Review not found' };
+    if (!userId) {
+      response.status(401);
+      return { message: 'Unauthorized: userId is required' };
     }
-    return review;
+
+    try {
+      const review = await this.reviewService.likeReview(id, userId);
+      return review;
+    } catch (error: any) {
+      response.status(400);
+      return { message: error.message };
+    }
   }
 }

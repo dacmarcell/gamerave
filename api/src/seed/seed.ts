@@ -14,7 +14,7 @@ async function seed() {
     const userRepository = AppDataSource.getRepository(User);
 
     console.log("Cleaning existing data...");
-    await AppDataSource.query('TRUNCATE TABLE "review", "game", "user" RESTART IDENTITY CASCADE;');
+    await AppDataSource.query('TRUNCATE TABLE "review", "game", "user", "game_like", "review_like" RESTART IDENTITY CASCADE;');
 
     console.log("Seeding User...");
     const passwordHash = await bcrypt.hash("password123", 10);

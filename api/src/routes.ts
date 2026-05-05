@@ -35,12 +35,6 @@ export const Routes = [
     controller: GameController,
     action: 'like'
   },
-  {
-    method: 'post',
-    route: '/dislike/:id',
-    controller: GameController,
-    action: 'dislike'
-  },
   // Reviews
   {
     method: 'get',
@@ -78,12 +72,6 @@ export const Routes = [
     route: '/like-review/:id',
     controller: ReviewController,
     action: 'likeReview'
-  },
-  {
-    method: 'post',
-    route: '/dislike-review/:id',
-    controller: ReviewController,
-    action: 'dislikeReview'
   },
   // Auth
   {

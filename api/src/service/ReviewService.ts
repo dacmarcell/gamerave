@@ -3,11 +3,13 @@ import { AppDataSource } from '../data-source';
 import { Review } from '../entity/Review';
 import { Game } from '../entity/Game';
 import { User } from '../entity/User';
+import { ReviewLike } from '../entity/ReviewLike';
 
 export class ReviewService {
   private reviewRepository = AppDataSource.getRepository(Review);
   private gameRepository = AppDataSource.getRepository(Game);
   private userRepository = AppDataSource.getRepository(User);
+  private reviewLikeRepository = AppDataSource.getRepository(ReviewLike);
 
   async all() {
     return this.reviewRepository.find();
@@ -62,21 +64,36 @@ export class ReviewService {
   async remove(id: number) {
     const reviewToRemove = await this.reviewRepository.findOneBy({ id });
     if (!reviewToRemove) return null;
+    await this.reviewLikeRepository.delete({ review: id as any });
     await this.reviewRepository.remove(reviewToRemove);
     return true;
   }
 
-  async likeReview(id: number) {
+  async likeReview(id: number, userId: number) {
     const review = await this.reviewRepository.findOneBy({ id });
-    if (!review) return null;
-    review.likes++;
-    return await this.reviewRepository.save(review);
-  }
+    if (!review) throw new Error('Review not found');
 
-  async dislikeReview(id: number) {
-    const review = await this.reviewRepository.findOneBy({ id });
-    if (!review) return null;
-    review.likes--;
-    return await this.reviewRepository.save(review);
+    const existingLike = await this.reviewLikeRepository.findOne({
+      where: {
+        review: { id: review.id },
+        user: { id: userId }
+      }
+    });
+
+    if (existingLike) {
+      // Toggle off
+      await this.reviewLikeRepository.remove(existingLike);
+      review.likes--;
+      return await this.reviewRepository.save(review);
+    } else {
+      // Toggle on
+      const newLike = this.reviewLikeRepository.create({
+        review: { id: review.id } as any,
+        user: { id: userId } as any
+      });
+      await this.reviewLikeRepository.save(newLike);
+      review.likes++;
+      return await this.reviewRepository.save(review);
+    }
   }
 }

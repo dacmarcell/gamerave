@@ -45,21 +45,19 @@ export class GameController {
 
   async like(request: Request, response: Response) {
     const id = parseInt(request.params.id);
-    const game = await this.gameService.like(id);
-    if (!game) {
-      response.status(404);
-      return { message: 'Game not found' };
-    }
-    return game;
-  }
+    const { userId } = request.body;
 
-  async dislike(request: Request, response: Response) {
-    const id = parseInt(request.params.id);
-    const game = await this.gameService.dislike(id);
-    if (!game) {
-      response.status(404);
-      return { message: 'Game not found' };
+    if (!userId) {
+      response.status(401);
+      return { message: 'Unauthorized: userId is required' };
     }
-    return game;
+
+    try {
+      const game = await this.gameService.like(id, userId);
+      return game;
+    } catch (error: any) {
+      response.status(400);
+      return { message: error.message };
+    }
   }
 }

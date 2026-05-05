@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import GameLikeButton from "./GameLikeButton";
 
 interface GameCardProps {
   game: {
@@ -25,10 +26,8 @@ function GameCard(props: GameCardProps) {
       onClick={() => router.push(`/games/${game.id}`)}
       className="group relative glass-morphism rounded-2xl overflow-hidden card-hover cursor-pointer p-6 flex flex-col gap-4 border border-white/5"
     >
-      <div className="absolute top-0 right-0 p-4">
-        <div className="bg-amber-500/10 text-amber-500 text-xs font-bold px-2 py-1 rounded-md border border-amber-500/20">
-          ★ {game.likes}
-        </div>
+      <div className="absolute top-0 right-0 p-4 z-10">
+        <GameLikeButton gameId={game.id} initialLikes={game.likes} className="text-xs font-bold px-2 py-1 rounded-md border border-amber-500/20" />
       </div>
 
       <div className="flex flex-col gap-1">

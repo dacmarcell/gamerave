@@ -1,12 +1,15 @@
+import ReviewLikeButton from "./ReviewLikeButton";
+
 interface ReviewCardProps {
   review: {
+    id: number;
     title: string;
     description: string;
     likes: number;
   };
 }
 
-async function ReviewCard(props: ReviewCardProps) {
+function ReviewCard(props: ReviewCardProps) {
   const { review } = props;
 
   return (
@@ -17,7 +20,7 @@ async function ReviewCard(props: ReviewCardProps) {
             {review.title}
           </h5>
           <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">
-            {review.likes} Helpful Reactions
+            Review
           </span>
         </div>
         <div className="flex text-amber-500 text-xs">
@@ -30,6 +33,10 @@ async function ReviewCard(props: ReviewCardProps) {
         <p className="text-slate-300 italic leading-relaxed pl-4">
           {review.description}
         </p>
+      </div>
+
+      <div className="mt-2">
+        <ReviewLikeButton reviewId={review.id} initialLikes={review.likes} />
       </div>
     </div>
   );

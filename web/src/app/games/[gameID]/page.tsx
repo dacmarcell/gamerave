@@ -1,6 +1,7 @@
 import ReviewHeaderActions from "@/components/ReviewHeaderActions";
 import ShareButton from "@/components/ShareButton";
 import ReviewCard from "@/components/ReviewCard";
+import GameLikeButton from "@/components/GameLikeButton";
 import { BASE_URL } from "@/constants";
 import { Game as GameType } from "@/types";
 import Link from "next/link";
@@ -60,9 +61,9 @@ export default async function GameDetailPage({ params }: { params: Promise<{ gam
           <h1 className="text-5xl font-black text-white">{game.name}</h1>
         </div>
         <div className="flex items-center gap-4">
-          <div className="flex flex-col items-end">
+          <div className="flex flex-col items-end gap-1">
             <span className="text-xs text-slate-500 font-bold uppercase">Popularity</span>
-            <span className="text-2xl font-bold text-amber-500">★ {game.likes}</span>
+            <GameLikeButton gameId={game.id} initialLikes={game.likes} className="text-2xl font-bold bg-transparent hover:bg-white/5 px-2 py-1 -mr-2 rounded-lg" />
           </div>
           <ShareButton gameName={game.name} />
         </div>
