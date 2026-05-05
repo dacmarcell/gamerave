@@ -1,3 +1,4 @@
+import ShareButton from "@/components/ShareButton";
 import ReviewCard from "@/components/ReviewCard";
 import { BASE_URL } from "@/constants";
 import { Game as GameType } from "@/types";
@@ -63,9 +64,7 @@ export default async function GameDetailPage({ params }: { params: Promise<{ gam
             <span className="text-xs text-slate-500 font-bold uppercase">Popularity</span>
             <span className="text-2xl font-bold text-amber-500">★ {game.likes}</span>
           </div>
-          <button className="bg-white/5 hover:bg-white/10 p-4 rounded-2xl border border-white/10 transition-all">
-            Share
-          </button>
+          <ShareButton gameName={game.name} />
         </div>
       </header>
 
