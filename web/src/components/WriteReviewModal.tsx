@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { BASE_URL } from "@/constants";
+import { apiFetch } from "@/lib/api";
 
 interface WriteReviewModalProps {
   gameId: number;
@@ -31,7 +31,7 @@ export default function WriteReviewModal({
     setError("");
 
     try {
-      const res = await fetch(`${BASE_URL}/reviews`, {
+      const res = await apiFetch("/reviews", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -53,6 +53,7 @@ export default function WriteReviewModal({
       setDescription("");
       onSuccess();
       onClose();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -67,7 +68,20 @@ export default function WriteReviewModal({
           onClick={onClose}
           className="absolute right-4 top-4 text-slate-400 hover:text-white transition-colors"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
         </button>
 
         <h2 className="text-2xl font-bold text-white mb-6">Write a Review</h2>
@@ -93,7 +107,9 @@ export default function WriteReviewModal({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-bold text-slate-300">Description</label>
+            <label className="text-sm font-bold text-slate-300">
+              Description
+            </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}

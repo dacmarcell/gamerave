@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { BASE_URL } from "@/constants";
 import { setAuthCookie } from "@/actions/auth";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
+import { apiFetch } from "@/lib/api";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -22,7 +22,7 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const res = await fetch(`${BASE_URL}/auth/login`, {
+      const res = await apiFetch("/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -39,6 +39,7 @@ export default function LoginPage() {
       await setAuthCookie(data.token);
       loginContext(data.user);
       router.push("/");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -91,9 +92,37 @@ export default function LoginPage() {
                 tabIndex={-1}
               >
                 {showPassword ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m2 2 20 20"/><path d="M6.71 6.71a10 10 0 0 0-4.71 5.29s3 7 10 7a10 10 0 0 0 5.29-1.71"/><path d="M14.12 14.12A3 3 0 0 1 9.88 9.88"/><path d="M17.29 17.29A10 10 0 0 0 22 12s-3-7-10-7a10 10 0 0 0-2.71.37"/></svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="m2 2 20 20" />
+                    <path d="M6.71 6.71a10 10 0 0 0-4.71 5.29s3 7 10 7a10 10 0 0 0 5.29-1.71" />
+                    <path d="M14.12 14.12A3 3 0 0 1 9.88 9.88" />
+                    <path d="M17.29 17.29A10 10 0 0 0 22 12s-3-7-10-7a10 10 0 0 0-2.71.37" />
+                  </svg>
                 ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
                 )}
               </button>
             </div>
@@ -110,7 +139,10 @@ export default function LoginPage() {
 
         <p className="text-center text-slate-400 text-sm mt-4">
           Don&apos;t have an account?{" "}
-          <Link href="/register" className="text-primary hover:underline font-bold">
+          <Link
+            href="/register"
+            className="text-primary hover:underline font-bold"
+          >
             Sign up
           </Link>
         </p>

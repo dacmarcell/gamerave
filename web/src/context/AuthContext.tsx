@@ -8,7 +8,7 @@ import {
   ReactNode,
 } from "react";
 import { removeAuthCookie } from "../actions/auth";
-import { BASE_URL } from "@/constants";
+import { apiFetch } from "@/lib/api";
 
 interface User {
   id: number;
@@ -46,9 +46,8 @@ export function AuthProvider({
 
   useEffect(() => {
     if (user) {
-      fetch(`${BASE_URL}/users/${user.id}/likes`)
+      apiFetch(`/users/${user.id}/likes`)
         .then((res) => {
-          console.log(res);
           if (!res.ok) throw new Error("Failed to fetch");
           return res.json();
         })

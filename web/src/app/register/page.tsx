@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { BASE_URL } from "@/constants";
 import Link from "next/link";
+import { apiFetch } from "@/lib/api";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -26,7 +26,7 @@ export default function RegisterPage() {
     }
 
     try {
-      const res = await fetch(`${BASE_URL}/auth/register`, {
+      const res = await apiFetch("/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -42,6 +42,7 @@ export default function RegisterPage() {
 
       // Automatically redirect to login after successful registration
       router.push("/login");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -54,7 +55,9 @@ export default function RegisterPage() {
       <div className="glass-morphism p-8 rounded-2xl w-full max-w-md border border-white/10 flex flex-col gap-6 shadow-2xl">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-white mb-2">Join the Rave</h1>
-          <p className="text-slate-400">Create an account to start reviewing games</p>
+          <p className="text-slate-400">
+            Create an account to start reviewing games
+          </p>
         </div>
 
         {error && (
@@ -95,16 +98,46 @@ export default function RegisterPage() {
                 tabIndex={-1}
               >
                 {showPassword ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m2 2 20 20"/><path d="M6.71 6.71a10 10 0 0 0-4.71 5.29s3 7 10 7a10 10 0 0 0 5.29-1.71"/><path d="M14.12 14.12A3 3 0 0 1 9.88 9.88"/><path d="M17.29 17.29A10 10 0 0 0 22 12s-3-7-10-7a10 10 0 0 0-2.71.37"/></svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="m2 2 20 20" />
+                    <path d="M6.71 6.71a10 10 0 0 0-4.71 5.29s3 7 10 7a10 10 0 0 0 5.29-1.71" />
+                    <path d="M14.12 14.12A3 3 0 0 1 9.88 9.88" />
+                    <path d="M17.29 17.29A10 10 0 0 0 22 12s-3-7-10-7a10 10 0 0 0-2.71.37" />
+                  </svg>
                 ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
                 )}
               </button>
             </div>
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-bold text-slate-300">Confirm Password</label>
+            <label className="text-sm font-bold text-slate-300">
+              Confirm Password
+            </label>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
@@ -122,9 +155,37 @@ export default function RegisterPage() {
                 tabIndex={-1}
               >
                 {showPassword ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m2 2 20 20"/><path d="M6.71 6.71a10 10 0 0 0-4.71 5.29s3 7 10 7a10 10 0 0 0 5.29-1.71"/><path d="M14.12 14.12A3 3 0 0 1 9.88 9.88"/><path d="M17.29 17.29A10 10 0 0 0 22 12s-3-7-10-7a10 10 0 0 0-2.71.37"/></svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="m2 2 20 20" />
+                    <path d="M6.71 6.71a10 10 0 0 0-4.71 5.29s3 7 10 7a10 10 0 0 0 5.29-1.71" />
+                    <path d="M14.12 14.12A3 3 0 0 1 9.88 9.88" />
+                    <path d="M17.29 17.29A10 10 0 0 0 22 12s-3-7-10-7a10 10 0 0 0-2.71.37" />
+                  </svg>
                 ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
                 )}
               </button>
             </div>
@@ -141,7 +202,10 @@ export default function RegisterPage() {
 
         <p className="text-center text-slate-400 text-sm mt-4">
           Already have an account?{" "}
-          <Link href="/login" className="text-primary hover:underline font-bold">
+          <Link
+            href="/login"
+            className="text-primary hover:underline font-bold"
+          >
             Sign in
           </Link>
         </p>

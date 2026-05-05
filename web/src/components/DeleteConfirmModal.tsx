@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { BASE_URL } from "@/constants";
+import { apiFetch } from "@/lib/api";
 
 interface DeleteConfirmModalProps {
   reviewId: number;
@@ -28,12 +28,9 @@ export default function DeleteConfirmModal({
     setError("");
 
     try {
-      const res = await fetch(
-        `${BASE_URL}/reviews/${reviewId}?userId=${userId}`,
-        {
-          method: "DELETE",
-        },
-      );
+      const res = await apiFetch(`/reviews/${reviewId}?userId=${userId}`, {
+        method: "DELETE",
+      });
 
       if (!res.ok) {
         const data = await res.json();
@@ -42,6 +39,7 @@ export default function DeleteConfirmModal({
 
       onSuccess();
       onClose();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message);
     } finally {

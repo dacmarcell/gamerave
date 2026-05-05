@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { BASE_URL } from "@/constants";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { apiFetch } from "@/lib/api";
 
 interface GameLikeButtonProps {
   gameId: number;
@@ -35,7 +35,7 @@ export default function GameLikeButton({
     setLoading(true);
 
     try {
-      const res = await fetch(`${BASE_URL}/like/${gameId}`, {
+      const res = await apiFetch(`/like/${gameId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

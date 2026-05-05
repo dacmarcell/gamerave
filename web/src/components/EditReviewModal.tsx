@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { BASE_URL } from "@/constants";
+import { apiFetch } from "@/lib/api";
 
 interface EditReviewModalProps {
   review: {
@@ -41,7 +41,7 @@ export default function EditReviewModal({
     setError("");
 
     try {
-      const res = await fetch(`${BASE_URL}/reviews/${review.id}`, {
+      const res = await apiFetch(`/reviews/${review.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -60,6 +60,7 @@ export default function EditReviewModal({
 
       onSuccess();
       onClose();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message);
     } finally {

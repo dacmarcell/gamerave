@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { BASE_URL } from "@/constants";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { apiFetch } from "@/lib/api";
 
 interface ReviewLikeButtonProps {
   reviewId: number;
@@ -33,7 +33,7 @@ export default function ReviewLikeButton({
     setLoading(true);
 
     try {
-      const res = await fetch(`${BASE_URL}/like-review/${reviewId}`, {
+      const res = await apiFetch(`/like-review/${reviewId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

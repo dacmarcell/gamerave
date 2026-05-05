@@ -9,13 +9,14 @@ interface ReviewHeaderActionsProps {
   gameId: number;
 }
 
-export default function ReviewHeaderActions({ gameId }: ReviewHeaderActionsProps) {
+export default function ReviewHeaderActions({
+  gameId,
+}: ReviewHeaderActionsProps) {
   const { user } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
 
   const handleSuccess = () => {
-    // Refresh the current route to fetch updated reviews
     router.refresh();
   };
 

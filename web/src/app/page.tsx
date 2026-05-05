@@ -1,12 +1,12 @@
 import GameCard from "@/components/GameCard";
-import { BASE_URL } from "@/constants";
+import { apiFetch } from "@/lib/api";
 import { Game } from "@/types";
 
 export const dynamic = "force-dynamic";
 
 async function getGamesAction() {
   try {
-    const res = await fetch(`${BASE_URL}/games`, { cache: "no-store" });
+    const res = await apiFetch("/games", { cache: "no-store" });
     if (!res.ok) return { games: [], error: "Failed to fetch games" };
     const games: Game[] = await res.json();
     return { games };

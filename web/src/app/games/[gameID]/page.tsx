@@ -2,9 +2,9 @@ import ReviewHeaderActions from "@/components/ReviewHeaderActions";
 import ShareButton from "@/components/ShareButton";
 import ReviewCard from "@/components/ReviewCard";
 import GameLikeButton from "@/components/GameLikeButton";
-import { BASE_URL } from "@/constants";
 import { Game as GameType } from "@/types";
 import Link from "next/link";
+import { apiFetch } from "@/lib/api";
 
 export const dynamic = "force-dynamic";
 
@@ -13,14 +13,15 @@ async function getGameByIDAction(id: string) {
     const validID = parseInt(id);
     if (isNaN(validID)) return { error: "Invalid Game ID" };
 
-    const res = await fetch(`${BASE_URL}/games/${validID}`, { cache: 'no-store' });
-    
+    const res = await apiFetch(`/games/${validID}`, { cache: "no-store" });
+
     if (res.status === 404) return { error: "Game not found" };
     if (!res.ok) return { error: "Failed to fetch game details" };
 
     const game: GameType = await res.json();
-    
-    if (typeof game === 'string') return { error: "Game not found in database" };
+
+    if (typeof game === "string")
+      return { error: "Game not found in database" };
 
     return { game };
   } catch {
@@ -28,7 +29,11 @@ async function getGameByIDAction(id: string) {
   }
 }
 
-export default async function GameDetailPage({ params }: { params: Promise<{ gameID: string }> }) {
+export default async function GameDetailPage({
+  params,
+}: {
+  params: Promise<{ gameID: string }>;
+}) {
   const gameID = (await params).gameID;
   const { game, error } = await getGameByIDAction(gameID);
 
@@ -36,8 +41,12 @@ export default async function GameDetailPage({ params }: { params: Promise<{ gam
     return (
       <div className="flex flex-col items-center justify-center py-20 gap-6">
         <div className="text-6xl">😕</div>
-        <h1 className="text-3xl font-bold text-white">{error || "Something went wrong"}</h1>
-        <p className="text-slate-400">We couldn&apos;t find the game you&apos;re looking for.</p>
+        <h1 className="text-3xl font-bold text-white">
+          {error || "Something went wrong"}
+        </h1>
+        <p className="text-slate-400">
+          We couldn&apos;t find the game you&apos;re looking for.
+        </p>
         <Link href="/" className="text-primary hover:underline font-bold">
           ← Back to Games
         </Link>
@@ -48,7 +57,10 @@ export default async function GameDetailPage({ params }: { params: Promise<{ gam
   return (
     <div className="flex flex-col gap-10 pb-20">
       <div className="flex items-center gap-4">
-        <Link href="/" className="text-slate-500 hover:text-white transition-colors">
+        <Link
+          href="/"
+          className="text-slate-500 hover:text-white transition-colors"
+        >
           Games
         </Link>
         <span className="text-slate-700">/</span>
@@ -57,13 +69,21 @@ export default async function GameDetailPage({ params }: { params: Promise<{ gam
 
       <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-white/5 pb-10">
         <div className="flex flex-col gap-2">
-          <span className="text-primary font-bold text-sm tracking-widest uppercase">Game Details</span>
+          <span className="text-primary font-bold text-sm tracking-widest uppercase">
+            Game Details
+          </span>
           <h1 className="text-5xl font-black text-white">{game.name}</h1>
         </div>
         <div className="flex items-center gap-4">
           <div className="flex flex-col items-end gap-1">
-            <span className="text-xs text-slate-500 font-bold uppercase">Popularity</span>
-            <GameLikeButton gameId={game.id} initialLikes={game.likes} className="text-2xl font-bold bg-transparent hover:bg-white/5 px-2 py-1 -mr-2 rounded-lg" />
+            <span className="text-xs text-slate-500 font-bold uppercase">
+              Popularity
+            </span>
+            <GameLikeButton
+              gameId={game.id}
+              initialLikes={game.likes}
+              className="text-2xl font-bold bg-transparent hover:bg-white/5 px-2 py-1 -mr-2 rounded-lg"
+            />
           </div>
           <ShareButton gameName={game.name} />
         </div>
@@ -80,7 +100,9 @@ export default async function GameDetailPage({ params }: { params: Promise<{ gam
               ))
             ) : (
               <div className="glass-morphism p-12 rounded-2xl text-center border-dashed border-white/10">
-                <p className="text-slate-500 italic">No reviews yet. Be the first to review {game.name}!</p>
+                <p className="text-slate-500 italic">
+                  No reviews yet. Be the first to review {game.name}!
+                </p>
               </div>
             )}
           </div>
@@ -91,7 +113,9 @@ export default async function GameDetailPage({ params }: { params: Promise<{ gam
             <h3 className="font-bold text-white">Quick Stats</h3>
             <div className="flex justify-between py-2 border-b border-white/5">
               <span className="text-slate-400">Total Reviews</span>
-              <span className="text-white font-medium">{game.reviews?.length || 0}</span>
+              <span className="text-white font-medium">
+                {game.reviews?.length || 0}
+              </span>
             </div>
             <div className="flex justify-between py-2 border-b border-white/5">
               <span className="text-slate-400">Rank</span>
