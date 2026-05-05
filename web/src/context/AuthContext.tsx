@@ -17,13 +17,14 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-
-  // Note: For a more robust app, we would fetch the user profile from the API using the cookie
-  // upon initial load. But to keep it simple and stateless on the client (without localStorage),
-  // we might lose the state on hard refresh unless we hydrate from the server.
-  // For now, let's keep it simple.
+export function AuthProvider({ 
+  children, 
+  initialUser 
+}: { 
+  children: ReactNode; 
+  initialUser: User | null 
+}) {
+  const [user, setUser] = useState<User | null>(initialUser);
 
   const loginContext = (userData: User) => {
     setUser(userData);
