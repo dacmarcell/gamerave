@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 import { removeAuthCookie } from "../actions/auth";
 import { BASE_URL } from "@/constants";
 
@@ -25,25 +31,29 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ 
-  children, 
-  initialUser 
-}: { 
-  children: ReactNode; 
-  initialUser: User | null 
+export function AuthProvider({
+  children,
+  initialUser,
+}: {
+  children: ReactNode;
+  initialUser: User | null;
 }) {
   const [user, setUser] = useState<User | null>(initialUser);
-  const [userLikes, setUserLikes] = useState<UserLikes>({ gameLikes: [], reviewLikes: [] });
+  const [userLikes, setUserLikes] = useState<UserLikes>({
+    gameLikes: [],
+    reviewLikes: [],
+  });
 
   useEffect(() => {
     if (user) {
       fetch(`${BASE_URL}/users/${user.id}/likes`)
-        .then(res => {
+        .then((res) => {
+          console.log(res);
           if (!res.ok) throw new Error("Failed to fetch");
           return res.json();
         })
-        .then(data => setUserLikes(data))
-        .catch(err => console.error("Failed to fetch user likes", err));
+        .then((data) => setUserLikes(data))
+        .catch((err) => console.error("Failed to fetch user likes", err));
     } else {
       setUserLikes({ gameLikes: [], reviewLikes: [] });
     }
@@ -59,27 +69,34 @@ export function AuthProvider({
   };
 
   const toggleGameLikeLocally = (id: number) => {
-    setUserLikes(prev => ({
+    setUserLikes((prev) => ({
       ...prev,
-      gameLikes: prev.gameLikes.includes(id) 
-        ? prev.gameLikes.filter(gId => gId !== id) 
-        : [...prev.gameLikes, id]
+      gameLikes: prev.gameLikes.includes(id)
+        ? prev.gameLikes.filter((gId) => gId !== id)
+        : [...prev.gameLikes, id],
     }));
   };
 
   const toggleReviewLikeLocally = (id: number) => {
-    setUserLikes(prev => ({
+    setUserLikes((prev) => ({
       ...prev,
-      reviewLikes: prev.reviewLikes.includes(id) 
-        ? prev.reviewLikes.filter(rId => rId !== id) 
-        : [...prev.reviewLikes, id]
+      reviewLikes: prev.reviewLikes.includes(id)
+        ? prev.reviewLikes.filter((rId) => rId !== id)
+        : [...prev.reviewLikes, id],
     }));
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, userLikes, loginContext, logoutContext, toggleGameLikeLocally, toggleReviewLikeLocally 
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        userLikes,
+        loginContext,
+        logoutContext,
+        toggleGameLikeLocally,
+        toggleReviewLikeLocally,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
