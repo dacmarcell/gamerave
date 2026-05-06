@@ -8,7 +8,7 @@ async function getGamesAction() {
   try {
     const res = await apiFetch("/games", { cache: "no-store" });
     if (!res.ok) return { games: [], error: "Failed to fetch games" };
-    const games: Game[] = await res.json();
+    const games: Game[] = res.data;
     return { games };
   } catch {
     return { games: [], error: "API connection refused" };

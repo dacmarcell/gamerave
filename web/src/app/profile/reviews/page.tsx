@@ -23,7 +23,7 @@ async function getUserReviews(userId: number) {
       cache: "no-store",
     });
     if (!res.ok) return [];
-    return await res.json();
+    return res.data;
   } catch {
     return [];
   }

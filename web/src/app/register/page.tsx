@@ -34,7 +34,7 @@ export default function RegisterPage() {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
+      const data = res.data;
 
       if (!res.ok) {
         throw new Error(data.message || "Registration failed");

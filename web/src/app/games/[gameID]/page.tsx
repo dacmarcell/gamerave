@@ -18,7 +18,7 @@ async function getGameByIDAction(id: string) {
     if (res.status === 404) return { error: "Game not found" };
     if (!res.ok) return { error: "Failed to fetch game details" };
 
-    const game: GameType = await res.json();
+    const game: GameType = res.data;
 
     if (typeof game === "string")
       return { error: "Game not found in database" };

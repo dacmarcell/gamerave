@@ -49,7 +49,7 @@ export function AuthProvider({
       apiFetch(`/users/${user.id}/likes`)
         .then((res) => {
           if (!res.ok) throw new Error("Failed to fetch");
-          return res.json();
+          return res.data;
         })
         .then((data) => setUserLikes(data))
         .catch((err) => console.error("Failed to fetch user likes", err));

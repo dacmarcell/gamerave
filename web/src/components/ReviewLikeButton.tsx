@@ -42,8 +42,7 @@ export default function ReviewLikeButton({
       });
 
       if (!res.ok) throw new Error("Failed to like review");
-
-      const updatedReview = await res.json();
+      const updatedReview = res.data;
       setLikes(updatedReview.likes);
       toggleReviewLikeLocally(reviewId);
     } catch (err) {

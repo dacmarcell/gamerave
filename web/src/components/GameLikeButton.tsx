@@ -44,8 +44,7 @@ export default function GameLikeButton({
       });
 
       if (!res.ok) throw new Error("Failed to like game");
-
-      const updatedGame = await res.json();
+      const updatedGame = res.data;
       setLikes(updatedGame.likes);
       toggleGameLikeLocally(gameId);
     } catch (err) {
