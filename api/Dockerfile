@@ -21,4 +21,5 @@ COPY --from=build /app/build ./build
 
 EXPOSE 3333
 
-CMD ["npm", "start"]
+CMD ["sh", "-c", "npm run seed:prod && npm start"]
+
